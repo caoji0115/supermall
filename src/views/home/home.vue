@@ -17,14 +17,16 @@
     data(){
       return{
         //result:null,
-        banners:[]
+        banners:[],
+        recommends:[]
       }
     },
     created() {
           getHomeMultidata().then(res =>{
             //console.log(res);
             //this.result = res;
-            this.result = res.data.banner.list;
+            this.banners = res.data.banner.list;
+            this.recommends = res.data.recommend.list;
           })
     }
   }
