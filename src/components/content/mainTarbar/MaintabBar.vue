@@ -26,13 +26,14 @@
 <script>
   import tabbar from 'components/common/tabbar/tabBar'
   import tabbaritem from 'components/common/tabbar/tabbaritem'
-    export default {
-        name: "MaintabBar",
-      components:{
-          tabbar,
-        tabbaritem
-      }
+
+  export default {
+    name: "MaintabBar",
+    components: {
+      tabbar,
+      tabbaritem
     }
+  }
 </script>
 
 <style scoped>
