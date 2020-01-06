@@ -4,15 +4,17 @@
       <div slot="center">购物街</div>
     </navbar>
 
-    <scroll class="content" ref="top" :num="3" @backclick="click">
+    <scroll class="content" ref="scroll"
+            :probeType="3" @backclick="backtopclick"
+            :pull-up-load="true" @pullupload="loadMore">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control :titles="['流行','新品','精选']" class="tab-control"
-                   @itemClick="itemclick"/>
+                   @itemClick="itemsclick"/>
       <goods-list :goods="showgoods"/>
     </scroll>
-    <back-top @click.native="backclick" v-show="isShow"/>
+    <back-top @click.native="backclick" v-show="isShowtop"/>
 
   </div>
 </template>
@@ -55,7 +57,7 @@
           'new': {page: 0, list: []},
           'sell': {page: 0, list: []},
         },
-        isShow:false
+        isShowtop: false, ispullload: false
       }
     },
     created() {
@@ -69,11 +71,21 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+
+      // this.$bus.$on('itemimgload',() =>{
+      //   this.$refs.scroll.refresh()
+      // created 获取元素时可能会为空 -> $ref.scroll 包括document的方法
+      // })
     },
-    methods:{
+    mounted() {
+      this.$bus.$on('itemimgload', () => {
+        this.$refs.scroll.refresh()
+      })
+    },
+    methods: {
       // 以下监听事件相关方法
-      itemclick(index){
-        if (index === 0){
+      itemsclick(index) {
+        if (index === 0) {
           this.type = 'pop'
         } else if (index === 1) {
           this.type = 'new'
@@ -82,12 +94,16 @@
         }
         console.log(index);
       },
-      backclick(){
-        this.$refs.top.scrollTo(0,0,500)
+      backclick() {
+        this.$refs.scroll.scrollTo(0, 0, 500)
       },
-      click(position){
-        console.log(position);
-        this.isShow = (-position.y) >1000
+      backtopclick(position) {
+        //console.log(position);
+        this.isShowtop = (-position.y) > 1000
+      },
+      loadMore() {
+        console.log('---');
+        this.getHomeGoods(this.type)
       },
 
       // 以下网络请求相关方法

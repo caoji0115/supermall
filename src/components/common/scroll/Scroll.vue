@@ -12,7 +12,14 @@
   export default {
     name: "Scroll",
     props:{
-      num:0
+      probeType:{
+        type:Number,
+        default: 0
+      },
+      pullUpLoad:{
+        type: Boolean,
+        dafault:false
+      }
     },
     data(){
       return {
@@ -21,15 +28,24 @@
     },
     mounted() {
       this.scroll = new Bscroll(this.$refs.wrapper,{
-        probeType:this.num
+        probeType:this.probeType,
+        pullUpLoad: this.pullUpLoad
       });
       this.scroll.on('scroll',position =>{
         this.$emit('backclick',position)
-      })
+      });
+      // this.scroll.on('pullingUp',() =>{
+      //   this.$emit('pullupload');
+      //  this.scroll.finishPullUp();
+      //  this.scroll.refresh();
+      // })
     },
     methods:{
       scrollTo(x,y,time=300){
         this.scroll.scrollTo(x,y,time)
+      },
+      refresh(){
+        this.scroll.refresh()
       }
     }
   }

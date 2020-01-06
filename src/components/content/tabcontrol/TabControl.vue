@@ -10,48 +10,52 @@
 <script>
   export default {
     name: "TabControl",
-    props:{
-      titles:{
-        type:Array,
-        default(){
+    props: {
+      titles: {
+        type: Array,
+        default() {
           return []
         }
       }
     },
-    data(){
+    data() {
       return {
-        currentIndex:0
+        currentIndex: 0
       }
     },
-    methods:{
-      itemclick(index){
+    methods: {
+      itemclick(index) {
         this.currentIndex = index;
-        this.$emit('itemClick',index)
+        this.$emit('itemClick', index)
       }
     }
   }
 </script>
 
 <style scoped>
-.tab-control{
-  display: flex;
-  text-align: center;
-  font-size: 15px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #d2d0d0;
+  .tab-control {
+    display: flex;
+    text-align: center;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #d2d0d0;
 
-}
-  .tab-control-item{
+  }
+
+  .tab-control-item {
     flex: 1;
   }
-.tab-control-item span{
-  padding: 5px;
-}
-  .active{
-  color: #cc1342;
+
+  .tab-control-item span {
+    padding: 5px;
   }
-  .active span{
+
+  .active {
+    color: #cc1342;
+  }
+
+  .active span {
     border-bottom: 3px solid #2813cc;
   }
 </style>
