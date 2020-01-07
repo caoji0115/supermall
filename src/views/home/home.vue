@@ -3,8 +3,8 @@
     <navbar class="home-nav">
       <div slot="center">购物街</div>
     </navbar>
-    <tab-control :titles="['流行','新品','精选']" class="tab-control" ref="tabcontrol1"
-                 @itemClick="itemsclick" v-show="isshowtabcontrol"/>
+    <tab-control :titles="['流行','新品','精选']" class="tab-control1" ref="tabcontrol1"
+                 @itemclick="itemsclick" v-show="isshowtabcontrol"/>
 
     <scroll class="content" ref="scroll"
             :probeType="3" @backclick="contentscrol"
@@ -12,8 +12,8 @@
       <home-swiper :banners="banners" @swiperimgload="swiperimgload"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control :titles="['流行','新品','精选']" class="tab-control" ref="tabcontrol"
-                   @itemClick="itemsclick"/>
+      <tab-control :titles="['流行','新品','精选']"  ref="tabcontrol2"
+                   @itemclick="itemsclick"/>
       <goods-list :goods="showgoods"/>
     </scroll>
     <back-top @click.native="backclick" v-show="isShowtop"/>
@@ -61,7 +61,8 @@
         },
         isShowtop: false,
         tabOffsetTop:0,
-        isshowtabcontrol:false
+        isshowtabcontrol:false,
+        saveY:0
       }
     },
     created() {
@@ -110,24 +111,28 @@
           this.type = 'sell'
         }
         console.log(index);
+        this.$refs.tabcontrol1 = index;
+        this.$refs.tabcontrol2 = index;
       },
       backclick() {
         this.$refs.scroll.scrollTo(0, 0, 500)
       },
       contentscrol(position) {
         //console.log(position);
-        this.isShowtop = (-position.y) > 1000
+        this.isShowtop = (-position.y) > 1000;
 
         this.isshowtabcontrol = (-position.y) > this.tabOffsetTop
+       // console.log(this.tabOffsetTop);
+        //console.log(this.isshowtabcontrol);
       },
       loadMore() {
         console.log('---');
         this.getHomeGoods(this.type)
       },
       swiperimgload(){
-        this.tabOffsetTop = this.$refs.tabcontrol.$el.offsetTOP
+        this.tabOffsetTop = this.$refs.tabcontrol2.$el.offsetTop;
+        //console.log(this.$refs.tabcontrol.$el.offsetTop);
       },
-
 
       // 以下网络请求相关方法
       getHomeMultidata() {
@@ -141,7 +146,8 @@
         getHomeGoods(type, page).then(res => {
           this.goods[type].list.push(...res.data.list);
           this.page = this.goods[type].page += 1;
-        })
+          this.$refs.scroll.finishPullUp();
+        });
       }
     },
     computed: {
@@ -149,27 +155,43 @@
         return this.goods[this.type].list
       }
     },
-
+    //
+    activated(){
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated(){
+      this.saveY = this.$refs.scroll.scroll.y
+      //console.log(this.$refs.scroll.scroll);
+    }
   }
 </script>
 
 <style scoped>
   #home {
-    margin-top: 44px;
+    /*margin-top: 44px;*/
     position: relative;
     height: 100vh;
+    margin: 0;
+    padding: 0;
   }
 
   .home-nav {
     background-color: #fedbff;
     color: #fff;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 9;
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top: 0;*/
+    /*z-index: 9;*/
   }
-
+.tab-control1{
+  position: absolute;
+  z-index: 9;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
   .content {
     position: absolute;
     overflow: hidden;
