@@ -11,41 +11,44 @@
 
   export default {
     name: "Scroll",
-    props:{
-      probeType:{
-        type:Number,
+    props: {
+      probeType: {
+        type: Number,
         default: 0
       },
-      pullUpLoad:{
+      pullUpLoad: {
         type: Boolean,
-        dafault:false
+        dafault: false
       }
     },
-    data(){
+    data() {
       return {
-        scroll:null
+        scroll: null
       }
     },
     mounted() {
-      this.scroll = new Bscroll(this.$refs.wrapper,{
-        probeType:this.probeType,
+      this.scroll = new Bscroll(this.$refs.wrapper, {
+        probeType: this.probeType,
         pullUpLoad: this.pullUpLoad
       });
-      this.scroll.on('scroll',position =>{
-        this.$emit('backclick',position)
+      this.scroll.on('scroll', position => {
+        this.$emit('backclick', position)
       });
-      // this.scroll.on('pullingUp',() =>{
-      //   this.$emit('pullupload');
-      //  this.scroll.finishPullUp();
-      //  this.scroll.refresh();
-      // })
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullupload');
+        //this.scroll.finishPullUp();
+        //this.scroll.refresh();
+      })
     },
-    methods:{
-      scrollTo(x,y,time=300){
-        this.scroll.scrollTo(x,y,time)
+    methods: {
+      scrollTo(x, y, time = 300) {
+        this.scroll && this.scroll.scrollTo(x, y, time)
       },
-      refresh(){
-        this.scroll.refresh()
+      refresh() {
+        this.scroll && this.scroll.refresh()
+      },
+      finishPullUp(){
+        this.scroll && this.scroll.finishPullUp();
       }
     }
   }
