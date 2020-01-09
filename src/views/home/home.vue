@@ -111,8 +111,8 @@
           this.type = 'sell'
         }
         console.log(index);
-        this.$refs.tabcontrol1 = index;
-        this.$refs.tabcontrol2 = index;
+        this.$refs.tabcontrol1.currentIndex = index;
+        this.$refs.tabcontrol2.currentIndex = index;
       },
       backclick() {
         this.$refs.scroll.scrollTo(0, 0, 500)

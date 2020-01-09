@@ -4,7 +4,7 @@
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
-      <span class="collect">{{goodsItem.cfav}}</span>
+      <span class="collect" @click="clickItem">{{goodsItem.cfav}}</span>
     </div>
 
   </div>
@@ -26,8 +26,7 @@
         this.$bus.$emit('itemimgload')
       },
       clickItem() {
-        console.log('---');
-        this.$router.push('/detail' + this.goodsItem.iid)
+        this.$router.push('/detail/' + this.goodsItem.iid)
       }
     }
   }

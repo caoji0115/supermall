@@ -29,7 +29,8 @@
     mounted() {
       this.scroll = new Bscroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        pullUpLoad: this.pullUpLoad
+        pullUpLoad: this.pullUpLoad,
+        click:true
       });
       this.scroll.on('scroll', position => {
         this.$emit('backclick', position)
