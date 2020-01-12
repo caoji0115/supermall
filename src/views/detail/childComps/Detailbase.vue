@@ -44,7 +44,6 @@
 }
 .title-info{
  font-size: 15px;
-
 }
   .price{
    margin-top: 10px;

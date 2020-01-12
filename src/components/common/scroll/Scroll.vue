@@ -18,12 +18,12 @@
       },
       pullUpLoad: {
         type: Boolean,
-        dafault: false
+        default: false
       }
     },
     data() {
       return {
-        scroll: null
+        scroll: null,
       }
     },
     mounted() {
@@ -33,7 +33,7 @@
         click:true
       });
       this.scroll.on('scroll', position => {
-        this.$emit('backclick', position)
+        this.$emit('scroll', position)
       });
       this.scroll.on('pullingUp', () => {
         this.$emit('pullupload');

@@ -7,7 +7,7 @@
                  @itemclick="itemsclick" v-show="isshowtabcontrol"/>
 
     <scroll class="content" ref="scroll"
-            :probeType="3" @backclick="contentscrol"
+            :probeType="3" @scroll="contentscroll"
             :pull-up-load="true" @pullupload="loadMore">
       <home-swiper :banners="banners" @swiperimgload="swiperimgload"/>
       <recommend-view :recommends="recommends"/>
@@ -35,6 +35,8 @@
   import BackTop from 'components/content/backtop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from "network/home";
+
+  import {debounce} from "common/utils";
 
   export default {
     name: "home",
@@ -83,7 +85,7 @@
       // })
     },
     mounted() {
-      const refresh = this.debounce(this.$refs.scroll.refresh,10);
+      const refresh = debounce(this.$refs.scroll.refresh,10);
 
       this.$bus.$on('itemimgload', () => {
         //this.$refs.scroll.refresh()
@@ -92,15 +94,15 @@
     },
     methods: {
       // 以下监听事件相关方法
-      debounce(func,delay){
-        let timer = null;
-        return function (...args) {
-          if (timer) clearTimeout(timer);
-          timer = setTimeout(()=>{
-            func.apply(this,args)
-          },delay)
-        }
-      },
+      // debounce(func,delay){
+      //   let timer = null;
+      //   return function (...args) {
+      //     if (timer) clearTimeout(timer);
+      //     timer = setTimeout(()=>{
+      //       func.apply(this,args)
+      //     },delay)
+      //   }
+      // },
 
       itemsclick(index) {
         if (index === 0) {
@@ -117,7 +119,7 @@
       backclick() {
         this.$refs.scroll.scrollTo(0, 0, 500)
       },
-      contentscrol(position) {
+      contentscroll(position) {
         //console.log(position);
         this.isShowtop = (-position.y) > 1000;
 
