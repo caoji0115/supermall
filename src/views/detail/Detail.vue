@@ -4,6 +4,7 @@
     <scroll class="content-detail" ref="scroll"
             :probeType="3" @scroll="contentscroll"
             :pullUpLoad="true">
+<!--      <div>{{$store.state.cartList}}</div>-->
       <detail-swiper :topimgs="topImages"/>
       <detail-base :goods="goods"></detail-base>
       <detail-shop :shop="shop"></detail-shop>
@@ -12,7 +13,8 @@
       <detail-comment ref="comment" :detailComment="detailComment"/>
       <detail-recomment ref="recomment" :recomments="recommends"/>
     </scroll>
-
+    <back-top @click.native="backclick" v-show="isShowtop"/>
+    <detail-bottombar @addCart="addToCart"/>
   </div>
 </template>
 
@@ -26,12 +28,14 @@
   import DetailParams from './childComps/DetailParams'
   import DetailComment from './childComps/DetailCommentInfo'
   import DetailRecomment from './childComps/DetailRecomment'
+  import DetailBottombar from './childComps/DetailBottombar'
 
 
   import scroll from 'components/common/scroll/Scroll'
 
   import {getGoodsDetail, getRecommend, Goods, Shop} from 'network/detail'
   import {debounce} from "common/utils";
+  import {backTopMixin} from "common/mixin";
 
   export default {
     name: "Detail",
@@ -44,8 +48,10 @@
       DetailParams,
       DetailComment,
       DetailRecomment,
+      DetailBottombar,
       scroll
     },
+    mixins:[backTopMixin],
     data() {
       return {
         iid: null,
@@ -58,7 +64,8 @@
         detailComment: {},
         recommends: [],
         themeTopYs: [],
-        getThemeTopYs: null
+        getThemeTopYs: null,
+        isShowtop:false
       }
     },
     methods: {
@@ -69,6 +76,16 @@
       titleclick(index) {
         this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200)
       },
+      addToCart(){
+        const product ={};
+        product.iid = this.iid;
+        product.img = this.topImages[0];
+        product.desc = this.goods.desc;
+        product.title = this.goods.title;
+        product.price = this.goods.realPrice;
+        //this.$store.commit('addCart',product);//mutations 用法
+        this.$store.dispatch('addCart',product);
+      },
       contentscroll(position) {
         const positionY = -position.y;
         let length = this.themeTopYs.length;
@@ -78,6 +95,7 @@
             this.$refs.nav.currentIndex =  i
           }
         }
+        this.isShowtop = (-position.y) > 1000;
       }
     },
     created() {
@@ -158,6 +176,7 @@
   .content-detail {
     height: calc(100% - 44px);
     background-color: #ffffff;
+    overflow: hidden;
     /*  position: absolute;*/
     /*  top: 44px;*/
     /*  bottom: 49px;*/
