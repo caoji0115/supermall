@@ -6,6 +6,7 @@
       <scroll class="cart-scroll">
         <cart-list/>
       </scroll>
+      <cart-bottom-bar/>
     </div>
 </template>
 
@@ -14,6 +15,7 @@
   import scroll from 'components/common/scroll/Scroll'
 
   import CartList from './childComps/CartList'
+  import CartBottomBar from './childComps/CartBottomBar'
 
   import {mapGetters} from 'vuex'
 
@@ -22,7 +24,8 @@
       components: {
         NavBar,
         scroll,
-        CartList
+        CartList,
+        CartBottomBar
       },
       computed: {
         // 3  计算cartList .length

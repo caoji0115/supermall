@@ -35,7 +35,7 @@
     },
     methods:{
       checkedChange(){
-        this.itemInfo.checked =! this.itemInfo.checked
+        this.itemInfo.checked = !this.itemInfo.checked
       }
     }
   }

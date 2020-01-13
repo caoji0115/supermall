@@ -6,11 +6,11 @@ export default {
           oldProduct = item
         }
       }
-      // const olProduct = state.cartList.find(item => item.iid === info.iid)
+      // const olProduct = content.state.cartList.find(item => item.iid === info.iid)
       if (oldProduct){
        context.commit('addCounter',oldProduct)
       }else {
-        payLoad.count =1;
+        payLoad.count = 1;
         context.commit('addToCart',payLoad)
       }
     }
